@@ -2,7 +2,6 @@ import numpy
 
 from src import config
 
-
 class Perceptron(object):
 
     def __init__(self, amount_in: int, amount_out: int):
