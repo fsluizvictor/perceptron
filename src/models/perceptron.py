@@ -2,6 +2,7 @@ import numpy
 
 from src import config
 
+
 class Perceptron(object):
 
     def __init__(self, amount_in: int, amount_out: int):
@@ -9,7 +10,7 @@ class Perceptron(object):
         self._amount_out = amount_out
         self._wheights = numpy.random.uniform(low=config.MIN_INTERVAL_TO_RANDOMIC_WHEIT,
                                               high=config.MAX_INTERVAL_TO_RANDOMIC_WHEIT,
-                                              size=(amount_in, amount_out))
+                                              size=(amount_in + 1, amount_out))
 
     @property
     def amount_in(self):
