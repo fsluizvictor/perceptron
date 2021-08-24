@@ -63,7 +63,8 @@ class Or:
             [1]
         ])
 
-class Xor:
+
+class Xor(Sample):
     amount_in = 2
     amount_out = 1
 
@@ -83,21 +84,31 @@ class Xor:
             [0]
         ])
 
-class Robot:
+
+class Robot(Sample):
     amount_in = 3
     amount_out = 2
 
-    def x0(self):
-        return [0, 0, 0, 0, 1, 1, 1, 1]
+    def x_in(self) -> ndarray:
+        return numpy.array([
+            [0, 0, 0],
+            [0, 0, 1],
+            [0, 1, 0],
+            [0, 1, 1],
+            [1, 0, 0],
+            [1, 0, 1],
+            [1, 1, 0],
+            [1, 1, 1],
+        ])
 
-    def x1(self):
-        return [0, 0, 1, 1, 0, 0, 1, 1]
-
-    def x2(self):
-        return [0, 1, 0, 1, 0, 1, 0, 1]
-
-    def y0(self):
-        return [1, 0, 1, 0, 1, 1, 1, 1]
-
-    def y1(self):
-        return [1, 1, 0, 1, 0, 0, 0, 0]
+    def y_out(self) -> ndarray:
+        return numpy.array([
+            [1, 1],
+            [0, 1],
+            [1, 0],
+            [0, 1],
+            [1, 0],
+            [1, 0],
+            [1, 0],
+            [1, 0],
+        ])
