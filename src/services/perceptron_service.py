@@ -6,13 +6,13 @@ import numpy
 from src import config
 from src.models.datasets.samples import Sample
 from src.models.perceptron import Perceptron
+from src.view.view import View
 
 
 class PerceptronService(object):
 
-    def execute_training(self, sample: Sample, model: Perceptron):
+    def execute_training(self, sample: Sample, model: Perceptron, view: View):
         for epoch in range(config.EPOCH):
-            print(epoch)
             aproximation_epoch_error = 0
             for s in range(len(sample.x_in())):
                 sample_error = 0
@@ -20,20 +20,14 @@ class PerceptronService(object):
                 y = sample.y_out()[s]
 
                 outputs = list()
-
-                if len(y) == 1:
-                    outputs = self.to_train(model, x_in, y)
-                    print(len(y) - 1)
-                else:
-                    for i in range(len(y)):
-                        print(y[i])
-                        outputs = self.to_train(model, x_in, [y[i]])
+                outputs = self.to_train(model, x_in, y)
 
                 for i in range(len(outputs)):
                     sample_error = self.__error(y[i], outputs[i])
 
                 aproximation_epoch_error += sample_error
-                print(aproximation_epoch_error)
+            view.show_divisor()
+            view.show_info_step(epoch, aproximation_epoch_error, sample)
 
     def to_train(self, model: Perceptron, x_in: List[int], y: List[int]) -> List[float]:
         x = [1]

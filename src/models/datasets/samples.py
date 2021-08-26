@@ -42,8 +42,11 @@ class And(Sample):
             [1]
         ])
 
+    def __str__(self):
+        return 'Amostra AND'
 
-class Or:
+
+class Or(Sample):
     amount_in = 2
     amount_out = 1
 
@@ -62,6 +65,9 @@ class Or:
             [1],
             [1]
         ])
+
+    def __str__(self):
+        return 'Amostra OR'
 
 
 class Xor(Sample):
@@ -84,6 +90,8 @@ class Xor(Sample):
             [0]
         ])
 
+    def __str__(self):
+        return 'Amostra XOR'
 
 class Robot(Sample):
     amount_in = 3
@@ -112,3 +120,6 @@ class Robot(Sample):
             [1, 0],
             [1, 0],
         ])
+
+    def __str__(self):
+        return 'Amostra ROBOT'

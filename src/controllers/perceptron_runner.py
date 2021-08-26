@@ -9,10 +9,9 @@ class PerceptronRunner:
         or_sample = Or()
         xor_sample = Xor()
         robot_sample = Robot()
-        #self.perceptron_controller = PerceptronController(robot_sample)
-        self.perceptron_controller = PerceptronController(and_sample)
-        self.perceptron_controller = PerceptronController(or_sample)
-        self.perceptron_controller = PerceptronController(xor_sample)
+        #self.perceptron_controller = PerceptronController(and_sample)
+        #self.perceptron_controller = PerceptronController(or_sample)
+        #self.perceptron_controller = PerceptronController(xor_sample)
         self.perceptron_controller = PerceptronController(robot_sample)
 
     def runner(self):
