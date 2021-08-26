@@ -1,4 +1,5 @@
 import math
+from datetime import datetime
 from typing import List, Optional
 
 import numpy
@@ -12,6 +13,7 @@ from src.view.view import View
 class PerceptronService(object):
 
     def execute_training(self, sample: Sample, model: Perceptron, view: View):
+        start = datetime.now()
         for epoch in range(config.EPOCH):
             aproximation_epoch_error = 0
             for s in range(len(sample.x_in())):
@@ -28,6 +30,10 @@ class PerceptronService(object):
                 aproximation_epoch_error += sample_error
             view.show_divisor()
             view.show_info_step(epoch, aproximation_epoch_error, sample)
+        end = datetime.now()
+        view.show_divisor()
+        view.benchmark(end, start)
+        view.show_divisor()
 
     def to_train(self, model: Perceptron, x_in: List[int], y: List[int]) -> List[float]:
         x = [1]

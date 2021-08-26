@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from src.models.datasets.samples import Sample
 
 
@@ -11,4 +13,5 @@ class View:
     def show_divisor(self):
         print('-------------------------------------------------------')
 
-
+    def benchmark(self, end: datetime, start: datetime):
+        print("Took {}s to increase the values".format((end - start).total_seconds()))
