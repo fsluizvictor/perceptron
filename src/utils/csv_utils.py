@@ -9,7 +9,8 @@ def open_file_csv(file_name: str) -> List[List[str]]:
         spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
         file_rows = list()
         for row in spamreader:
-            file_rows.append(row)
+            content_row = str(row).split(',')
+            file_rows.append(content_row)
     return file_rows
 
 
@@ -24,6 +25,10 @@ def abalone_values_to_predict():
     dataset = open_file_csv(config.ABALONE_CSV_PATH)
     values_to_predict = list()
     for values in dataset:
-        print(values[len(values) - 1])
-        values_to_predict.append(values[len(values) - 1])
+        value_to_predict = int(str(values[len(values) - 1]).replace('\']', ''))
+        values_to_predict.append(str(value_to_predict))
     write_file_csv(config.ABALONE_VALUE_TO_PREDICT_CSV_PATH, values_to_predict)
+
+def read_abalone_values_to_predict()->List[int]:
+    rows = open_file_csv(config.ABALONE_VALUE_TO_PREDICT_CSV_PATH)
+    return [int(row) for row in rows]
