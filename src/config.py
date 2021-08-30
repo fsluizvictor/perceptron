@@ -5,3 +5,4 @@ EPOCH = 10000
 PERCEPTRON_IN = 2
 PERCEPTRON_OUT = 1
 ABALONE_CSV_PATH = 'src/utils/datasets/abalone.csv'
+ABALONE_VALUE_TO_PREDICT_CSV_PATH = 'src/utils/datasets/abalone_value_to_predict.csv'
