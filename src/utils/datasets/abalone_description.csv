@@ -145,8 +145,5 @@
 	Total	4177
 
 10 - Changes in dataset
-M = 1
-F = 0
-I = 2
-
-
+add three columns with binary value
+M F I

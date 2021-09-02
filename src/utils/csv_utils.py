@@ -25,10 +25,30 @@ def abalone_values_to_predict():
     dataset = open_file_csv(config.ABALONE_CSV_PATH)
     values_to_predict = list()
     for values in dataset:
-        value_to_predict = int(str(values[len(values) - 1]).replace('\']', ''))
-        values_to_predict.append(str(value_to_predict))
+        value_to_predict = values[len(values) - 1].replace('\']', '')
+        values_to_predict.append(value_to_predict)
     write_file_csv(config.ABALONE_VALUE_TO_PREDICT_CSV_PATH, values_to_predict)
 
-def read_abalone_values_to_predict()->List[int]:
+
+def create_inputs_abalone():
+    dataset = open_file_csv(config.ABALONE_CSV_PATH)
+    new_dataset = list()
+    for values in dataset:
+        new_sample = []
+        abalone_sex = values[0].replace('[\'', '')
+        values.remove(values[0])
+        values[len(values) - 1] = str(values[len(values) - 1]).replace('\']', '')
+        if abalone_sex == 'M':
+            new_sample = ['1', '0', '0']
+        if abalone_sex == 'F':
+            new_sample = ['0', '1', '0']
+        if abalone_sex == 'I':
+            new_sample = ['0', '0', '1']
+        new_sample.extend(values)
+        new_dataset.append(new_sample)
+    write_file_csv(config.IN_ABALONE_CSV_PATH, new_dataset)
+
+
+def read_abalone_values_to_predict() -> List[int]:
     rows = open_file_csv(config.ABALONE_VALUE_TO_PREDICT_CSV_PATH)
     return [int(row) for row in rows]
