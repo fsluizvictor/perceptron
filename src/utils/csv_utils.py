@@ -9,7 +9,8 @@ def open_file_csv(file_name: str) -> List[List[str]]:
         spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
         file_rows = list()
         for row in spamreader:
-            content_row = str(row).split(',')
+            if row.__contains__(','):
+                content_row = str(row).split(',')
             file_rows.append(content_row)
     return file_rows
 
@@ -49,6 +50,17 @@ def create_inputs_abalone():
     write_file_csv(config.IN_ABALONE_CSV_PATH, new_dataset)
 
 
-def read_abalone_values_to_predict() -> List[int]:
-    rows = open_file_csv(config.ABALONE_VALUE_TO_PREDICT_CSV_PATH)
-    return [int(row) for row in rows]
+def read_abalone_dataset(file_name: str = config.IN_ABALONE_CSV_PATH) -> list:
+    with open(file_name, newline='') as csvfile:
+        spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
+        file_rows = list()
+        for row in spamreader:
+            row.remove(row[len(row) - 1])
+            new_elements = list()
+            for element in row:
+                if element.isdigit():
+                    new_elements.append(int(element))
+                else:
+                    new_elements.append(float(element))
+            file_rows.append(new_elements)
+    return file_rows
