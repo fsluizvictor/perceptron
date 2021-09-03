@@ -9,6 +9,7 @@ def open_file_csv(file_name: str) -> List[List[str]]:
         spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
         file_rows = list()
         for row in spamreader:
+            content_row = row
             if row.__contains__(','):
                 content_row = str(row).split(',')
             file_rows.append(content_row)
@@ -32,30 +33,38 @@ def abalone_values_to_predict():
 
 
 def create_inputs_abalone():
-    dataset = open_file_csv(config.ABALONE_CSV_PATH)
+    dataset = open_file_csv(config.ABALONE_IN)
     new_dataset = list()
     for values in dataset:
+        if 8 <= int(values[len(values) - 1]) <= 10:
+            values.remove(values[len(values) - 1])
+            new_dataset.append(values)
+    write_file_csv(config.ABALONE_IN_SELECTED_SAMPLES, new_dataset)
+
+
+def create_outputs_abalone():
+    dataset = read_abalone_dataset(config.ABALONE_OUT)
+    new_dataset = list()
+    for value in dataset:
         new_sample = []
-        abalone_sex = values[0].replace('[\'', '')
-        values.remove(values[0])
-        values[len(values) - 1] = str(values[len(values) - 1]).replace('\']', '')
-        if abalone_sex == 'M':
-            new_sample = ['1', '0', '0']
-        if abalone_sex == 'F':
-            new_sample = ['0', '1', '0']
-        if abalone_sex == 'I':
-            new_sample = ['0', '0', '1']
-        new_sample.extend(values)
-        new_dataset.append(new_sample)
-    write_file_csv(config.IN_ABALONE_CSV_PATH, new_dataset)
+        if value[0] == 8:
+            new_sample = [1, 0, 0]
+        if value[0] == 9:
+            new_sample = [0, 1, 0]
+        if value[0] == 10:
+            new_sample = [0, 0, 1]
+        if len(new_sample):
+            new_dataset.append(new_sample)
+    write_file_csv(config.ABALONE_OUT_BINARY_REPRESENTATION, new_dataset)
 
 
-def read_abalone_dataset(file_name: str = config.IN_ABALONE_CSV_PATH) -> list:
+def read_abalone_dataset(file_name: str = config.ABALONE_IN_SELECTED_SAMPLES) -> list:
     with open(file_name, newline='') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
         file_rows = list()
         for row in spamreader:
-            row.remove(row[len(row) - 1])
+            if len(row) > 1:
+                row.remove(row[len(row) - 1])
             new_elements = list()
             for element in row:
                 if element.isdigit():
