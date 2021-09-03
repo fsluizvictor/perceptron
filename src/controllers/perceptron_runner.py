@@ -1,5 +1,6 @@
+from src import config
 from src.controllers.perceptron_controller import PerceptronController
-from src.models.datasets.samples import And, Or, Xor, Robot
+from src.models.datasets.samples import And, Or, Xor, Robot, Abalone
 from src.utils import csv_utils
 
 
@@ -10,11 +11,13 @@ class PerceptronRunner:
         or_sample = Or()
         xor_sample = Xor()
         robot_sample = Robot()
+        abalone_sample = Abalone()
         #self.perceptron_controller = PerceptronController(and_sample)
         #self.perceptron_controller = PerceptronController(or_sample)
         #self.perceptron_controller = PerceptronController(xor_sample)
         #self.perceptron_controller = PerceptronController(robot_sample)
-        csv_utils.abalone_values_to_predict()
+        self.perceptron_controller = PerceptronController(abalone_sample)
+
 
     def runner(self):
         self.perceptron_controller.execute()

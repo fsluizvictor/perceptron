@@ -4,6 +4,9 @@ from typing import List
 import numpy
 from numpy import ndarray
 
+from src import config
+from src.utils import csv_utils
+
 
 class Sample(ABC):
 
@@ -93,6 +96,7 @@ class Xor(Sample):
     def __str__(self):
         return 'Amostra XOR'
 
+
 class Robot(Sample):
     amount_in = 3
     amount_out = 2
@@ -123,3 +127,17 @@ class Robot(Sample):
 
     def __str__(self):
         return 'Amostra ROBOT'
+
+
+class Abalone(Sample):
+    amount_in = 10
+    amount_out = 3
+
+    def x_in(self):
+        return csv_utils.read_abalone_dataset(config.ABALONE_IN_SELECTED_SAMPLES)
+
+    def y_out(self):
+        return csv_utils.read_abalone_dataset(config.ABALONE_OUT_BINARY_REPRESENTATION)
+
+    def __str__(self):
+        return 'Amostra ABALONE'

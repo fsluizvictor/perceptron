@@ -7,6 +7,7 @@ import numpy
 from src import config
 from src.models.datasets.samples import Sample
 from src.models.perceptron import Perceptron
+from src.utils import csv_utils
 from src.view.view import View
 
 
@@ -14,12 +15,16 @@ class PerceptronService(object):
 
     def execute_training(self, sample: Sample, model: Perceptron, view: View):
         start = datetime.now()
+        predict_step = list()
         for epoch in range(config.EPOCH):
             aproximation_epoch_error = 0
+            dataset_in = sample.x_in()
+            dataset_out = sample.y_out()
+
             for s in range(len(sample.x_in())):
                 sample_error = 0
-                x_in = sample.x_in()[s]
-                y = sample.y_out()[s]
+                x_in = dataset_in[s]
+                y = dataset_out[s]
 
                 outputs = list()
                 outputs = self.to_train(model, x_in, y)
@@ -29,11 +34,13 @@ class PerceptronService(object):
 
                 aproximation_epoch_error += sample_error
             view.show_divisor()
-            view.show_info_step(epoch, aproximation_epoch_error, sample)
+            predict_step.append(view.show_info_step(epoch, aproximation_epoch_error, sample))
+        csv_utils.write_file_csv(config.ABALONE_PREDICT, predict_step)
         end = datetime.now()
         view.show_divisor()
         view.benchmark(end, start)
         view.show_divisor()
+
 
     def to_train(self, model: Perceptron, x_in: List[int], y: List[int]) -> List[float]:
         x = [1]
@@ -46,7 +53,6 @@ class PerceptronService(object):
             for i in range(len(x)):
                 u[j] += (x[i] * model.wheights[i][j])
             output[j] = self.__sigmoidal(u[j])
-
         delta_w = numpy.zeros((model.amount_in[0] + 1, model.amount_out))
 
         for j in range(len(u)):
