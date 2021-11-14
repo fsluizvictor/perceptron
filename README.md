@@ -1,7 +1,7 @@
 # Perceptron
 
-In this repository contains a implementation of perceptron algorthm,
-was used for this project the Abalone dataset.
+In this repository contains a implementation of perceptron algorthm
+using Abalone dataset.
 
 Link to dataset:
 
