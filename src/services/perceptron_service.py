@@ -1,33 +1,35 @@
-import math
 from datetime import datetime
-from typing import List, Optional
-
-import numpy
 
 from src import config
 from src.models.datasets.samples import Sample
 from src.models.perceptron import Perceptron
+from src.services.dataset_service import DataSetService
+from src.services.training_service import TrainingService
 from src.utils import csv_utils
 from src.view.view import View
 
 
-class PerceptronService(object):
+class PerceptronService:
+    def __init__(self):
+        pass
 
-    def execute_training(self, sample: Sample, model: Perceptron, view: View):
+    def execute_training(self, sample: Sample, model: Perceptron, view: View, create_csv: bool = False):
         start = datetime.now()
         predict_step = list()
+        load_data = DataSetService(sample)
+        data = load_data.get_samples()
+        dataset_in = data[0]
+        dataset_out = data[1]
         for epoch in range(config.EPOCH):
             aproximation_epoch_error = 0
-            dataset_in = sample.x_in()
-            dataset_out = sample.y_out()
-
             for s in range(len(sample.x_in())):
                 sample_error = 0
                 x_in = dataset_in[s]
                 y = dataset_out[s]
 
                 outputs = list()
-                outputs = self.to_train(model, x_in, y)
+                training = TrainingService(model, x_in, y)
+                outputs = training.to_train()
 
                 for i in range(len(outputs)):
                     sample_error = self.__error(y[i], outputs[i])
@@ -35,38 +37,12 @@ class PerceptronService(object):
                 aproximation_epoch_error += sample_error
             view.show_divisor()
             predict_step.append(view.show_info_step(epoch, aproximation_epoch_error, sample))
-        csv_utils.write_file_csv(config.ABALONE_PREDICT, predict_step)
+        if create_csv:
+            csv_utils.write_file_csv(config.ABALONE_PREDICT_10000_EPOCHS, predict_step)
         end = datetime.now()
         view.show_divisor()
         view.benchmark(end, start)
         view.show_divisor()
-
-
-    def to_train(self, model: Perceptron, x_in: List[int], y: List[int]) -> List[float]:
-        x = [1]
-        x.extend(x_in)
-
-        u = [0.0] * len(y)
-        output = [0.0] * len(y)
-
-        for j in range(len(y)):
-            for i in range(len(x)):
-                u[j] += (x[i] * model.wheights[i][j])
-            output[j] = self.__sigmoidal(u[j])
-        delta_w = numpy.zeros((model.amount_in[0] + 1, model.amount_out))
-
-        for j in range(len(u)):
-            for i in range(len(x)):
-                delta_w[i][j] = config.LEARNING_COEFFICIENT * ((y[j] - output[j]) * x[i])
-
-        for j in range(len(u)):
-            for i in range(len(x)):
-                model.wheights[i][j] += delta_w[i][j]
-
-        return output
-
-    def __sigmoidal(self, x: float) -> float:
-        return 1 / (1 + math.exp(-x))
 
     def __error(self, value_wanted: float, value_got: float):
         return abs(value_wanted - value_got)

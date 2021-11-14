@@ -1,9 +1,6 @@
-import math
-
 from src.models.datasets.samples import Sample
 from src.models.perceptron import Perceptron
 from src.services.perceptron_service import PerceptronService
-from src import config
 from src.view.view import View
 
 

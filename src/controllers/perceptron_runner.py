@@ -1,8 +1,5 @@
-from src import config
 from src.controllers.perceptron_controller import PerceptronController
 from src.models.datasets.samples import And, Or, Xor, Robot, Abalone
-from src.utils import csv_utils
-
 
 class PerceptronRunner:
 

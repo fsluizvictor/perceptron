@@ -16,4 +16,4 @@ class View:
         print('-------------------------------------------------------')
 
     def benchmark(self, end: datetime, start: datetime):
-        print("Took {}m to increase the values".format((end - start).total_seconds() / 60))
+        print("Took {}s to increase the values".format((end - start).total_seconds()))
